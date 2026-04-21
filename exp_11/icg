@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX 100
+
+// Structure to store quadruple
+typedef struct {
+    char op;
+    char arg1[10];
+    char arg2[10];
+    char result[10];
+} Quadruple;
+
+char stack[MAX][10];
+int top = -1;
+
+void push(char *val) {
+    strcpy(stack[++top], val);
+}
+
+char* pop() {
+    return stack[top--];
+}
+
+int main() {
+    char expr[MAX];
+    Quadruple quad[MAX];
+    int qIndex = 0;
+    int tempCount = 1;
+
+    printf("Enter postfix expression: ");
+    scanf("%s", expr);
+
+    for (int i = 0; i < strlen(expr); i++) {
+        char ch = expr[i];
+
+        if (isalnum(ch)) {
+            char op[2] = {ch, '\0'};
+            push(op);
+        }
+        else {
+            char op2[10], op1[10];
+
+            strcpy(op2, pop());
+            strcpy(op1, pop());
+
+            char temp[10];
+            sprintf(temp, "T%d", tempCount++);
+
+            // store quadruple
+            quad[qIndex].op = ch;
+            strcpy(quad[qIndex].arg1, op1);
+            strcpy(quad[qIndex].arg2, op2);
+            strcpy(quad[qIndex].result, temp);
+
+            qIndex++;
+
+            push(temp);
+        }
+    }
+
+    printf("\nQuadruples:\n");
+    printf("Op\tArg1\tArg2\tResult\n");
+
+    for (int i = 0; i < qIndex; i++) {
+        printf("%c\t%s\t%s\t%s\n",
+               quad[i].op,
+               quad[i].arg1,
+               quad[i].arg2,
+               quad[i].result);
+    }
+
+    return 0;
+}
