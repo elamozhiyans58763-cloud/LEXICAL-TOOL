@@ -1,0 +1,27 @@
+def leading_trailing(grammar):
+    leading = {nt: set() for nt in grammar}
+    trailing = {nt: set() for nt in grammar}
+
+    for nt in grammar:
+        for prod in grammar[nt]:
+            if prod[0].islower():
+                leading[nt].add(prod[0])
+            if prod[-1].islower():
+                trailing[nt].add(prod[-1])
+
+    print("LEADING:")
+    for nt in leading:
+        print(nt, ":", leading[nt])
+
+    print("\nTRAILING:")
+    for nt in trailing:
+        print(nt, ":", trailing[nt])
+
+
+grammar = {
+    'E': ['E+T', 'T'],
+    'T': ['T*F', 'F'],
+    'F': ['(E)', 'i']
+}
+
+leading_trailing(grammar)
