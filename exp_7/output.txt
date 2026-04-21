@@ -1,0 +1,8 @@
+Stack   Input   Action
+a       abb$    Shift
+aa      bb$     Shift
+aab     b$      Shift
+aS      b$      Reduce S->ab
+aSb     $       Shift
+S       $       Reduce S->aSb
+Accepted
