@@ -1,0 +1,6 @@
+Enter postfix expression: ab+c*
+
+Quadruples:
+Op      Arg1    Arg2    Result
++       a       b       T1
+*       T1      c       T2
