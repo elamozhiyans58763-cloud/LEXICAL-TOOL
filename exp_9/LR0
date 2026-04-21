@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX 50
+
+typedef struct {
+    char lhs;
+    char rhs[10][10];
+    int count;
+} Production;
+
+Production grammar[10];
+int g_count = 0;
+
+int exists(char closure[][20], int size, char item[]) {
+    for (int i = 0; i < size; i++) {
+        if (strcmp(closure[i], item) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+void closure(char items[][20], int *n) {
+    int changed = 1;
+
+    while (changed) {
+        changed = 0;
+
+        for (int i = 0; i < *n; i++) {
+            char *dot = strchr(items[i], '.');
+
+            if (dot && *(dot + 1) != '\0') {
+                char symbol = *(dot + 1);
+
+                if (isupper(symbol)) {
+                    for (int j = 0; j < g_count; j++) {
+                        if (grammar[j].lhs == symbol) {
+                            for (int k = 0; k < grammar[j].count; k++) {
+
+                                char new_item[20];
+                                sprintf(new_item, "%c->.%s", symbol, grammar[j].rhs[k]);
+
+                                if (!exists(items, *n, new_item)) {
+                                    strcpy(items[*n], new_item);
+                                    (*n)++;
+                                    changed = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    grammar[0].lhs = 'S';
+    strcpy(grammar[0].rhs[0], "CC");
+    grammar[0].count = 1;
+
+    grammar[1].lhs = 'C';
+    strcpy(grammar[1].rhs[0], "cC");
+    strcpy(grammar[1].rhs[1], "d");
+    grammar[1].count = 2;
+
+    g_count = 2;
+
+    char items[MAX][20] = {"S->.CC"};
+    int n = 1;
+
+    closure(items, &n);
+
+    printf("Closure:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%s\n", items[i]);
+    }
+
+    return 0;
+}
