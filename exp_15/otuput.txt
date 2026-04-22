@@ -1,0 +1,6 @@
+Allocated a at offset 0
+Allocated b at offset 4
+Allocated c at offset 8
+Deallocated c from offset 8
+Deallocated b from offset 4
+Deallocated a from offset 0
