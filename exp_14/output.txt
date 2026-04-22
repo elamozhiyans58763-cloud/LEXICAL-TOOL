@@ -1,0 +1,5 @@
+Statement       IN        OUT
+a=b+c           {b,c,e}   {a,c,e}
+d=a-e           {a,e,c}   {d,c,a}
+b=d+c           {d,c,a}   {b,a}
+e=b-a           {b,a}     {}
